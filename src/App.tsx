@@ -5,14 +5,18 @@ import {User} from './types';
 
 
 const App: React.FC = () => {
-  const [users] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+
+  const addUser = (user: User) => {
+    setUsers(prev => [...prev, user]);
+  };
 
 
   return (
     <div className="container">
       <div className="row mt-2">
         <div className="col-6">
-          <UserForm />
+          <UserForm onSubmit={addUser} />
         </div>
         <div className="col-6">
           <Users users={users}/>

@@ -13,12 +13,32 @@ const UserForm: React.FC<Props> = ({ onSubmit }) => {
     role: 'user',
   });
 
+  const userChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setUserMutation(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
+  const userCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+    setUserMutation(prev => ({
+      ...prev,
+      isActive: checked,
+    }));
+  };
 
-
+  const userSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    onSubmit({
+      id: Math.random().toString(),
+      ...userMutation,
+    });
+  };
 
   return (
-    <form>
+    <form onSubmit={userSubmit}>
       <h4>Add New User</h4>
       <div className="form-group">
         <label htmlFor="name">Name</label>
@@ -29,6 +49,7 @@ const UserForm: React.FC<Props> = ({ onSubmit }) => {
           required
           className="form-control"
           value={userMutation.name}
+          onChange={userChange}
         />
       </div>
       <div className="form-group">
@@ -40,6 +61,7 @@ const UserForm: React.FC<Props> = ({ onSubmit }) => {
           required
           className="form-control"
           value={userMutation.email}
+          onChange={userChange}
         />
       </div>
       <div className="form-group">
@@ -49,6 +71,7 @@ const UserForm: React.FC<Props> = ({ onSubmit }) => {
           id="role"
           className="form-control"
           value={userMutation.role}
+          onChange={userChange}
         >
           <option value="user">User</option>
           <option value="editor">Editor</option>
@@ -62,6 +85,7 @@ const UserForm: React.FC<Props> = ({ onSubmit }) => {
           id="isActive"
           className="form-check-input"
           checked={userMutation.isActive}
+          onChange={userCheckboxChange}
         />
         <label className="form-check-label" htmlFor="isActive">Active</label>
       </div>
